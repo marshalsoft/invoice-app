@@ -63,29 +63,29 @@ const HandleDownloadReceipt = async()=>{
   
 
   return (
-    <div className="min-h-screen bg-gray-100 py-10 px-4 sm:px-6 lg:px-5">
+    <div className="lg:min-h-screen bg-gray-100 lg:py-10  overflow-x-scroll">
       {/* Action Bar - Hidden during print */}
-      <div className="max-w-4xl mx-auto mb-6 flex justify-between items-center print:hidden">
-        <h1 className="text-2xl font-bold "
+      <div className="w-full mx-auto mb-6 flex justify-between items-center px-5 fixed top-[0px] left-[0px] bg-white p-3 ">
+        <div className="text-2xl font-bold px-3 flex-grow"
         style={{color:"#1e2939"}}
-        >Proforma Invoice</h1>
-        <div className="flex space-x-3">
+        >Proforma Invoice</div>
+        <div className="flex ">
           <button 
             onClick={HandleDownloadReceipt}
             className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
           >
-            <DownloadIcon className="w-4 h-4 mr-2" />
-            Download
+        <DownloadIcon className="w-4 h-4 mr-2" />
+         Download
           </button>
         </div>
       </div>
 
       {/* Invoice Document */}
       <div ref={divRef}
-       className="p-5"
+       className="p-5 mt-20"
        >
       <div 
-       className="max-w-4xl mx-auto shadow-xl rounded-xl overflow-hidden print:shadow-none print:rounded-none"
+       className="lg:max-w-4xl mx-auto shadow-xl rounded-xl overflow-hidden print:shadow-none print:rounded-none"
        style={{backgroundColor:"white"}}
        >
         {/* Header */}
@@ -253,13 +253,6 @@ const HandleDownloadReceipt = async()=>{
         </div>
       </div>
       </div>
-      <style>{`
-        @media print {
-          body { background-color: white; padding: 0; }
-          .print\\:hidden { display: none; }
-          .shadow-xl { box-shadow: none; }
-        }
-      `}</style>
     </div>
   );
 };
