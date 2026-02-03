@@ -66,7 +66,7 @@ const HandleDownloadReceipt = async()=>{
     <div className="lg:min-h-screen bg-gray-100 lg:py-10  overflow-x-scroll">
       {/* Action Bar - Hidden during print */}
       <div className="w-full mx-auto mb-6 flex justify-between items-center px-5 fixed top-[0px] left-[0px] bg-white p-3 ">
-        <div className="text-2xl font-bold px-3 flex-grow"
+        <div className="text-[18px] lg:text-2xl font-bold px-3 flex-grow"
         style={{color:"#1e2939"}}
         >Proforma Invoice</div>
         <div className="flex ">
@@ -74,7 +74,7 @@ const HandleDownloadReceipt = async()=>{
             onClick={HandleDownloadReceipt}
             className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
           >
-        <DownloadIcon className="w-4 h-4 mr-2" />
+        <DownloadIcon className="w-4 h-4 " />
          Download
           </button>
         </div>
@@ -82,18 +82,18 @@ const HandleDownloadReceipt = async()=>{
 
       {/* Invoice Document */}
       <div ref={divRef}
-       className="p-5 mt-20"
+       className="p-3 lg:p-5 mt-20"
        >
       <div 
        className="lg:max-w-4xl mx-auto shadow-xl rounded-xl overflow-hidden print:shadow-none print:rounded-none"
        style={{backgroundColor:"white"}}
        >
         {/* Header */}
-        <div  className="p-10 flex flex-col md:flex-row justify-between"
+        <div  className="p-5 lg:p-10 flex flex-col md:flex-row justify-between"
         style={{backgroundColor:"#0f172a",color:"white"}}
         >
           <div>
-            <h2 className="text-3xl font-extrabold tracking-tight">Anizee <span 
+            <h2 className="text-xl lg:text-3xl font-extrabold tracking-tight">Anizee <span 
             style={{color:"#60a5fa"}}
             >Koncept</span></h2>
             <div className="mt-4 space-y-1 text-sm "
@@ -105,7 +105,7 @@ const HandleDownloadReceipt = async()=>{
             </div>
           </div>
           <div className="mt-8 md:mt-0 text-right">
-            <h3 className="text-4xl font-light uppercase tracking-widest "
+            <h3 className="text-xl lg:text-4xl font-light uppercase tracking-widest "
              style={{color:"#60a5fa"}}
             >Proforma</h3>
             <div className="mt-4 text-sm">
@@ -119,7 +119,7 @@ const HandleDownloadReceipt = async()=>{
           </div>
         </div>
 
-        <div className="p-10">
+        <div className="p-5 lg:p-10">
           {/* Client Details */}
           <div className="mb-10">
             <h4 className="text-xs font-bold uppercase tracking-wider mb-2"
@@ -159,17 +159,17 @@ const HandleDownloadReceipt = async()=>{
               </thead>
               <tbody>
                 {invoiceData.items.map((item,index) =>{
-                //  if (item.type === "subtotal") {
-                // const sectionTotal = calculateSectionSubtotal(index);
-                // return <tr key={index} className="border-b transition-colors"
-                // style={{color:"black"}}
-                // >
-                //      <td colSpan={3} className="py-4 pe-5 font-semibold ps-3 text-right"
-                //     >Sub Total</td>
-                //     <td className="py-4 font-bold ps-3"
-                //     >₦{sectionTotal.toLocaleString()}</td>
-                //   </tr>
-                //  }
+                 if (item.type === "subtotal") {
+                const sectionTotal = calculateSectionSubtotal(index);
+                return <tr key={index} className="border-b transition-colors"
+                style={{color:"white"}}
+                >
+                     <td colSpan={3} className="py-4 pe-5 font-semibold ps-3 text-right"
+                    >Sub Total</td>
+                    <td className="py-4 font-bold ps-3"
+                    >₦{sectionTotal.toLocaleString()}</td>
+                  </tr>
+                 }
                  if (item.type === "section") {
                 return <tr key={index} className="border-b transition-colors"
                 style={{borderBottomColor:"#d1d5dc",backgroundColor:"#f3f4f6"}}
@@ -187,7 +187,7 @@ const HandleDownloadReceipt = async()=>{
                     <td className="py-4 text-center w-[30px]"
                        style={{color:"#4a5565"}}
                     >{item.quantity}</td>
-                    <td className="py-4 text-left ps-5 min-w-[120px]"
+                    <td className="py-4 text-left ps-5 lg:min-w-[120px]"
                     style={{color:"#4a5565"}}
                     >₦{item.unitPrice.toLocaleString()}</td>
                     <td className="py-4 font-bold text-right"
