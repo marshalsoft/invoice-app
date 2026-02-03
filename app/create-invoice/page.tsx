@@ -20,13 +20,11 @@ const CreateInvoice = () => {
       { id: 1, description: "Rubber Chairs", quantity: 30, unitPrice: 300,type:"item" },
       { id: 2, description: "Rectangular Rubber Tables", quantity: 6, unitPrice: 2000,type:"item" },
       { id: 3, description: "Mini Canopies", quantity: 2, unitPrice: 12000,type:"item" },
-      { id: 3, description: "Logistics", quantity: 1, unitPrice: 20000,type:"item" },
       { id: 3, description: "Sub Total", quantity: 1, unitPrice: 0,type:"subtotal" },
       { id: 3, description: "ENTERTAINMENT", quantity: 1, unitPrice: 0,type:"section" },
       { id: 3, description: "RICE (<small>Jumbo pack of Rice, Sizable peppered chicken, Bottle water and can malt</small>)", quantity: 30, unitPrice: 7500,type:"item" },
       { id: 4, description: "SMALL CHOPS (<small>A Plate of small chops containing 1 spring roll, 1 samosa and 5 puff puff with sizable peppered chicken, bottle water and can malt<small>)", quantity: 30, unitPrice: 6500,type:"item" },
-      { id: 3, description: "Logistics", quantity: 1, unitPrice: 20000,type:"item" },
-      { id: 3, description: "Sub Total", quantity: 1, unitPrice: 0,type:"subtotal" },
+      { id: 3, description: "Logistics", quantity: 1, unitPrice: 35000,type:"item" }
     ],
     taxRate: 0.075, // 7.5% VAT
   });
@@ -164,7 +162,7 @@ const HandleDownloadReceipt = async()=>{
                 return <tr key={index} className="border-b transition-colors"
                 style={{color:"white"}}
                 >
-                     <td colSpan={3} className="py-4 pe-5 font-semibold ps-3 text-right"
+                    <td colSpan={3} className="py-4 pe-5 font-semibold ps-3 text-right"
                     >Sub Total</td>
                     <td className="py-4 font-bold ps-3"
                     >₦{sectionTotal.toLocaleString()}</td>
