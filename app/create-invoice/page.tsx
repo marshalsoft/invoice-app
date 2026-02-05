@@ -7,7 +7,7 @@ import html2canvas from 'html2canvas';
 const CreateInvoice = () => {
   // Initial state with the requested items
   const [invoiceData, setInvoiceData] = useState({
-    invoiceNumber: `AC-E-2026-001`,
+    invoiceNumber: `AC-E-2026-004`,
     date: moment().format("Do, MMMM YYYY"),
     dueDate:moment().add(4,"days").format("Do, MMMM YYYY") ,
     client: {
@@ -16,17 +16,11 @@ const CreateInvoice = () => {
       email: ""
     },
     items: [
-      { id: 0, description: "RENTALS", quantity: 1, unitPrice: 0,type:"section" },
-      { id: 1, description: "Rubber Chairs", quantity: 30, unitPrice: 300,type:"item" },
-      { id: 2, description: "Rectangular Rubber Tables", quantity: 6, unitPrice: 2000,type:"item" },
-      { id: 3, description: "Mini Canopies", quantity: 2, unitPrice: 12000,type:"item" },
-      { id: 3, description: "Sub Total", quantity: 1, unitPrice: 0,type:"subtotal" },
-      { id: 3, description: "ENTERTAINMENT", quantity: 1, unitPrice: 0,type:"section" },
-      { id: 3, description: "RICE (<small>Jumbo pack of Rice, Sizable peppered chicken, Bottle water and can malt</small>)", quantity: 30, unitPrice: 7500,type:"item" },
-      { id: 4, description: "SMALL CHOPS (<small>A Plate of small chops containing 1 spring roll, 1 samosa and 5 puff puff with sizable peppered chicken, bottle water and can malt<small>)", quantity: 30, unitPrice: 6500,type:"item" },
-      { id: 3, description: "Logistics", quantity: 1, unitPrice: 35000,type:"item" }
+      { id: 0, description: "ENTERTAINMENT", quantity: 0, unitPrice: 0,type:"section" },
+      { id: 1, description: "SMALL CHOPS  (<small>A Plate of small chops containing 1 spring roll, 1 samosa and 5 puff puff with sizable peppered chicken, bottle water and can malt</small>)", quantity: 30, unitPrice: 6500,type:"item" },
+      { id: 1, description: "Logistics", quantity: 1, unitPrice: 35000,type:"item" },
     ],
-    taxRate: 0.075, // 7.5% VAT
+    taxRate: 0.75, // 7.5% VAT
   });
 
   const calculateSubtotal = () => {
@@ -94,10 +88,12 @@ const HandleDownloadReceipt = async()=>{
             <h2 className="text-xl lg:text-3xl font-extrabold tracking-tight">Anizee <span 
             style={{color:"#60a5fa"}}
             >Koncept</span></h2>
+            <div className="flex items-center gap-1 text-[12px]">RC No.:<b>4006488</b></div>
             <div className="mt-4 space-y-1 text-sm "
             style={{color:"#cbd5e1"}}
             >
-              <p className="flex items-center"><MapPin className="w-3 h-3 mr-2" /> Plot 1 Sir Alex Ameachina, Trans-engineering Estate Abuja, Nigeria</p>
+            
+              <p className="flex items-center"><MapPin className="w-3 h-3 mr-2" size={30} /> Plot 1 Sir Alex Ameachina, Trans-engineering Estate Abuja, Nigeria</p>
               <p className="flex items-center"><Phone className="w-3 h-3 mr-2" /> +2348034148857</p>
               <p className="flex items-center"><Mail className="w-3 h-3 mr-2" /> aniekutt@gmail.com</p>
             </div>
@@ -206,12 +202,7 @@ const HandleDownloadReceipt = async()=>{
                 <span>Subtotal:</span>
                 <span>₦{subtotal.toLocaleString()}</span>
               </div>
-              <div className="flex justify-between "
-               style={{color:"#4a5565"}}
-              >
-                <span>VAT (7.5%):</span>
-                <span>₦{tax.toLocaleString()}</span>
-              </div>
+              
               <div className="flex justify-between text-xl font-bold pt-3 border-t"
               style={{color:"#1e2939"}}
               >
@@ -237,8 +228,11 @@ const HandleDownloadReceipt = async()=>{
               style={{color:"#6a7282"}}
               >
                 Please make 70% deposit to confirm booking. Balance is due 24 hours before the event date.
-                <p className='p-2 text-[16px]'>
+                <p className='p-3 text-[14px] mt-3'
+                style={{backgroundColor:"#bebebe38",color:"#000000"}}
+                >
                 <b>Bank:</b> Monie Point <br/><b>Acc No:</b> 8034148857 <br/><b>Name:</b> Anizee Koncept
+                <br/><b>Tax ID.:</b> 2620358085416
                 </p>
               </p>
             </div>
