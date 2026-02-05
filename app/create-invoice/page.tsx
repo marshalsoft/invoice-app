@@ -1,15 +1,34 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
 import React, { useRef, useState } from 'react';
 import { Printer, Download, Mail, Phone, MapPin, CreditCard, DownloadIcon } from 'lucide-react';
 import moment from 'moment';
 import html2canvas from 'html2canvas';
 import BaseButton from '../components/baseButton';
-import { EditComponent } from './components/editItem';
-
+import { EditComponent, ItemType } from './components/editItem';
+export interface InvoiceProp {
+    invoiceNumber?: string;
+    date?: string;
+    dueDate?: string;
+    client: {
+      name?: string;
+      address?: string;
+      email?: string;
+    },
+    items: InvoiceItem[],
+    taxRate?: number;
+}
+export interface InvoiceItem {
+  description:string;
+  quantity:number;
+  unitPrice:number;
+  type:ItemType
+}
 const CreateInvoice = () => {
   const [addItem,setAddItem] = useState(false)
+  const [showBtn,setShowBtn] = useState(true)
   // Initial state with the requested items
-  const [invoiceData, setInvoiceData] = useState({
+  const [invoiceData, setInvoiceData] = useState<InvoiceProp>({
     invoiceNumber: `AC-E-2026-004`,
     date: moment().format("Do, MMMM YYYY"),
     dueDate:moment().add(4,"days").format("Do, MMMM YYYY") ,
@@ -19,25 +38,27 @@ const CreateInvoice = () => {
       email: ""
     },
     items: [],
-    taxRate:  0.075, // 7.5% VAT
+    taxRate: 0 //0.075, // 7.5% VAT
   });
 
   const calculateSubtotal = () => {
-    return invoiceData.items.reduce((sum, item) => sum + (item.quantity * item.unitPrice), 0);
+ return invoiceData.items.reduce((sum, item) => sum + (item.quantity * item.unitPrice), 0);
   };
 
   const calculateSectionSubtotal = (upToIndex: number) => {
     return invoiceData.items
-      .filter((item, index) => index <= upToIndex && item.type === "item")
+      .filter((item:InvoiceItem, index) => index <= upToIndex && item.type === "item")
       .reduce((sum, item) => sum + (item.quantity * item.unitPrice), 0);
   };
 
   const subtotal = calculateSubtotal();
-  const tax = subtotal * invoiceData.taxRate;
+  const tax = 0 //* invoiceData.taxRate!;
   const total = subtotal + tax;
 
 const divRef = useRef(null)
 const HandleDownloadReceipt = async()=>{
+  setShowBtn(false)
+   setTimeout(async()=>{
     const canvas = await html2canvas(divRef.current!);
     const dataURL = canvas.toDataURL('image/png');
     // Create a temporary link to trigger download
@@ -45,8 +66,10 @@ const HandleDownloadReceipt = async()=>{
     link.href = dataURL;
     link.download = `Proforma-invoice-${moment().format("YYYY-MM-DD")}`;
     link.click();
-    setTimeout(()=>{
     },500)
+    setTimeout(()=>{
+      setShowBtn(true)
+    },1000)
 }
 
 
@@ -188,13 +211,13 @@ const HandleDownloadReceipt = async()=>{
                 <tr>
                   <td>
                     <div className='w-[180px] mt-3' >
-                    <BaseButton 
+                    {showBtn && <BaseButton 
                     text='Add Item'
                     onClick={()=>{
                       setAddItem(true)
                     }}
                     type='button'
-                    />
+                    />}
                     </div>
                   </td>
                 </tr>
@@ -214,7 +237,7 @@ const HandleDownloadReceipt = async()=>{
               <div className="flex justify-between "
                style={{color:"#4a5565"}}
               >
-                <span>VAT ({invoiceData.taxRate * 100}%):</span>
+                <span>VAT ({(invoiceData.taxRate ?? 0) * 100}%):</span>
                 <span>₦{tax.toLocaleString()}</span>
               </div>
               <div className="flex justify-between text-xl font-bold pt-3 border-t"
@@ -268,7 +291,7 @@ setInvoiceData({
   ...invoiceData,
   items:[
     ...invoiceData.items,
-    {description:form.description!,id:invoiceData.items.length +1,quantity:parseFloat(form.quantity!),type:"item",unitPrice:parseFloat(form.amount!)}
+    {description:form.description!,quantity:form.quantity ?? 0,unitPrice:form.amount ?? 0,type:form.type as ItemType}
   ]
 })
 setAddItem(false)

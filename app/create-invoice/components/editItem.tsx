@@ -1,18 +1,22 @@
 import BaseButton from "@/app/components/baseButton";
 import BaseInput from "@/app/components/baseInput";
 import BaseModal from "@/app/components/baseModal"
+import BaseSelect from "@/app/components/baseSelect";
 import { ReturnAllNumbers } from "@/app/includes/functions";
 import { FormEvent, useState } from "react";
+export type ItemType = "item" | "section" | "subtotal";
 export interface formDataProps {
         description?:string;
-        quantity?:string;
-        amount?:string;
+        quantity?:number;
+        amount?:number;
+        type:ItemType
     }
 export const EditComponent = ({onClose,onValue}:{onClose:()=>void;onValue:(form:formDataProps)=>void;})=>{
     const [formData,setFormData] = useState<formDataProps>({
         description:"",
-        quantity:"",
-        amount:"",
+        quantity:0,
+        amount:0,
+        type:"item"
     })
     const handleSubmit = (e:FormEvent)=>{
         e.preventDefault();
@@ -36,22 +40,54 @@ export const EditComponent = ({onClose,onValue}:{onClose:()=>void;onValue:(form:
             </tr>
         </thead>
         <tbody >
+            <tr className="text-black ">
+                <td colSpan={2}
+                className="pb-5"
+                >
+                    <BaseSelect 
+                    list={[
+                        {title:"Item",value:"item",name:"item"},
+                        {title:"Section",value:"section",name:"section"},
+                        {title:"Subtotal",value:"subtotal",name:"subtotal"}
+                    ]}
+                    name="type"
+                    custom
+                    onValueChange={(value)=>{
+                    setFormData({
+                          ...formData,
+                          type:String(value.value) as ItemType
+                    })
+                    }}
+                    value={formData.type}
+                    >
+                    </BaseSelect>
+                </td>
+            </tr>
             <tr className="text-black flex gap-4">
                 <td  className="w-[300px]">
                     <BaseInput 
                     name="description"
                     required
                     onValueChange={({value})=>{
-                    setFormData({
+                        if(formData.type === "item")
+                        {
+                        return setFormData({
                           ...formData,
                           description:value  
+                    })    
+                        }
+                    setFormData({
+                          ...formData,
+                          description:value,
+                          amount:0,
+                          quantity:0
                     })
                     }}
                     value={formData.description}
                     type="text"
                     />
                 </td>
-                <td className="w-[100px]">
+                {formData.type === "item" &&<td className="w-[100px]">
                      <BaseInput 
                     name="quantity"
                     required
@@ -62,14 +98,14 @@ export const EditComponent = ({onClose,onValue}:{onClose:()=>void;onValue:(form:
                         }
                     setFormData({
                           ...formData,
-                          quantity:value  
+                          quantity:parseFloat(value)
                     })
                     }}
-                    value={ReturnAllNumbers(formData.quantity!)}
+                    value={ReturnAllNumbers(String(formData.quantity!))}
                     type="text"
                     />
-                </td>
-                <td className="w-[100px]">
+                </td>}
+                {formData.type === "item" &&<td className="w-[100px]">
                      <BaseInput 
                     name="amount"
                     required
@@ -80,13 +116,13 @@ export const EditComponent = ({onClose,onValue}:{onClose:()=>void;onValue:(form:
                         }
                     setFormData({
                           ...formData,
-                          amount:value  
+                          amount:parseFloat(value) 
                     })
                     }}
-                    value={ReturnAllNumbers(formData.amount!)}
+                    value={ReturnAllNumbers(String(formData.amount!))}
                     type="text"
                     />
-                </td>
+                </td>}
                 <td className="w-[100px]">
                     <BaseButton 
                     text="Add"
@@ -99,6 +135,7 @@ export const EditComponent = ({onClose,onValue}:{onClose:()=>void;onValue:(form:
             </tr>
         </tbody>
     </table>
+
     </form>
     </BaseModal>
 }
