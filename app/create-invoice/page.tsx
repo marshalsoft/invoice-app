@@ -3,8 +3,11 @@ import React, { useRef, useState } from 'react';
 import { Printer, Download, Mail, Phone, MapPin, CreditCard, DownloadIcon } from 'lucide-react';
 import moment from 'moment';
 import html2canvas from 'html2canvas';
+import BaseButton from '../components/baseButton';
+import { EditComponent } from './components/editItem';
 
 const CreateInvoice = () => {
+  const [addItem,setAddItem] = useState(false)
   // Initial state with the requested items
   const [invoiceData, setInvoiceData] = useState({
     invoiceNumber: `AC-E-2026-004`,
@@ -15,12 +18,8 @@ const CreateInvoice = () => {
       address: "Edge water estate Edge water estate, 2 Obi Achebe Drive, Eti-Osa, Lagos 106104, Lagos",
       email: ""
     },
-    items: [
-      { id: 0, description: "ENTERTAINMENT", quantity: 0, unitPrice: 0,type:"section" },
-      { id: 1, description: "SMALL CHOPS  (<small>A Plate of small chops containing 1 spring roll, 1 samosa and 5 puff puff with sizable peppered chicken, bottle water and can malt</small>)", quantity: 30, unitPrice: 6500,type:"item" },
-      { id: 1, description: "Logistics", quantity: 1, unitPrice: 35000,type:"item" },
-    ],
-    taxRate: 0.75, // 7.5% VAT
+    items: [],
+    taxRate:  0.075, // 7.5% VAT
   });
 
   const calculateSubtotal = () => {
@@ -50,9 +49,6 @@ const HandleDownloadReceipt = async()=>{
     },500)
 }
 
- 
-
-  
 
   return (
     <div className="lg:min-h-screen bg-gray-100 lg:py-10  overflow-x-scroll">
@@ -189,6 +185,19 @@ const HandleDownloadReceipt = async()=>{
                     >₦{(item.quantity * item.unitPrice).toLocaleString()}</td>
                   </tr>}
                 )}
+                <tr>
+                  <td>
+                    <div className='w-[180px] mt-3' >
+                    <BaseButton 
+                    text='Add Item'
+                    onClick={()=>{
+                      setAddItem(true)
+                    }}
+                    type='button'
+                    />
+                    </div>
+                  </td>
+                </tr>
               </tbody>
             </table>
           </div>
@@ -202,7 +211,12 @@ const HandleDownloadReceipt = async()=>{
                 <span>Subtotal:</span>
                 <span>₦{subtotal.toLocaleString()}</span>
               </div>
-              
+              <div className="flex justify-between "
+               style={{color:"#4a5565"}}
+              >
+                <span>VAT ({invoiceData.taxRate * 100}%):</span>
+                <span>₦{tax.toLocaleString()}</span>
+              </div>
               <div className="flex justify-between text-xl font-bold pt-3 border-t"
               style={{color:"#1e2939"}}
               >
@@ -245,6 +259,21 @@ const HandleDownloadReceipt = async()=>{
         </div>
       </div>
       </div>
+{addItem && <EditComponent
+onClose={()=>{
+  setAddItem(false)
+}}
+onValue={(form)=>{
+setInvoiceData({
+  ...invoiceData,
+  items:[
+    ...invoiceData.items,
+    {description:form.description!,id:invoiceData.items.length +1,quantity:parseFloat(form.quantity!),type:"item",unitPrice:parseFloat(form.amount!)}
+  ]
+})
+setAddItem(false)
+}}
+/>}
     </div>
   );
 };
