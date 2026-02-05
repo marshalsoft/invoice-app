@@ -4,7 +4,7 @@ import { useState } from "react";
 import { LoginProps } from "./types";
 import { toast } from "react-toastify";
 import { useApiRequest } from "./functions";
-import {name}  from "../../../package.json";
+import {name}  from "../../package.json";
 export interface ApiResponse {
     status:boolean;
     message:string;
